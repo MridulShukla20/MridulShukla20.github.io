@@ -1,0 +1,37 @@
+.socials {
+  display: flex;
+  align-items: center;
+  /* 16 between the icons themselves, once each side's padding is discounted. */
+  gap: 32px;
+}
+
+/*
+ * The icon is 16px; the target is not. The negative margin keeps the padded
+ * hit box from moving the icons apart or off the row they sit on.
+ */
+.social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  margin: -8px;
+  color: var(--ink-3);
+  border-radius: 3px;
+  transition: color 0.15s ease;
+}
+
+.social:hover {
+  color: var(--ink);
+}
+
+/* Under a thumb the padded box goes from 32 to 40, still without moving. */
+@media (pointer: coarse) {
+  .social {
+    padding: 12px;
+    margin: -12px;
+  }
+
+  .socials {
+    gap: 40px;
+  }
+}

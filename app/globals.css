@@ -1,0 +1,407 @@
+/* ==========================================================================
+   Reset
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/*
+ * The window never scrolls. The only scroller is the column inside the shell,
+ * so the document is pinned to exactly one viewport.
+ */
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+/* The backdrop paints here — no separate layer element. */
+body {
+  background-color: var(--backdrop);
+  background-image: url('/grid.svg');
+  background-size: 120px 120px;
+  /*
+   * Half a tile off centre. Dead centre puts two dashed verticals in the left
+   * gutter and one in the right at 1120 + even widths; shifting the phase by
+   * 60px balances them either side of the shell.
+   */
+  background-position: calc(50% + 60px) 0px;
+  background-repeat: repeat;
+  /* Pins the texture to the viewport so it cannot travel with anything. */
+  background-attachment: fixed;
+  color: var(--ink);
+  font-family: var(--font-manrope), system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 24px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* The grid is an external file per theme, so the swap is a whole new URL. */
+[data-theme='light'] body {
+  background-image: url('/grid-light.svg');
+}
+
+/*
+ * The ruler gutters. Half of the 1120px shell is 560px, so these sit flush
+ * outside its edges at every viewport width. Drawn as they are on both sides —
+ * no mirroring.
+ */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 30px;
+  z-index: 0;
+  pointer-events: none;
+  background-image: var(--ruler);
+  background-size: 30px 120px;
+  background-position: 0 0;
+  background-repeat: repeat-y;
+}
+
+body::before {
+  right: calc(50% + 560px);
+}
+
+body::after {
+  left: calc(50% + 560px);
+}
+
+@media (max-width: 1011px) {
+  body::before,
+  body::after {
+    display: none;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* ==========================================================================
+   Structural tokens — shared by both themes
+   ========================================================================== */
+
+:root {
+  /*
+   * The page gutter. One fluid value shared by .view-inner, the status row and
+   * the footer, so every left edge in the app lines up at every width and the
+   * step between breakpoints is continuous rather than a jump.
+   */
+  --gutter: clamp(20px, 4vw, 32px);
+  --radius-card: 16px;
+  --radius-panel: 24px;
+  --app-max: 1120px;
+  --reveal: 640px;
+  --case-max: 720px;
+  --bar-h: 72px;
+  --bar-h-mobile: 68px;
+  --sidebar-w: 264px;
+}
+
+/*
+ * Two breakpoints, and they mean different things.
+ *
+ *   1012px -- the shell breakpoint. Above it the sidebar exists.
+ *    640px -- the content breakpoint. Above it a row can hold three columns.
+ *
+ * They were the same number once, which is why a tablet got the phone layout:
+ * no sidebar was being read as no room, when 768px has room for plenty. What
+ * sits between the two now runs the desktop content layout with no sidebar.
+ * Sizes in between are carried by clamp(), not by a third breakpoint.
+ */
+@media (max-width: 639px) {
+  :root {
+    /* One line of 20px text does not need 72. */
+    --bar-h: 60px;
+  }
+}
+
+/* ==========================================================================
+   Dark theme (default)
+   ========================================================================== */
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --page: #1a1a1a;
+  --panel: #232323;
+  --surface: #232323;
+  --backdrop: #08080a;
+  --fill-muted: #232323;
+  --fill-subtle: #282828;
+  --ink: #f4f4f4;
+  --ink-body: #d6d6d9;
+  --ink-muted: #b4b4b4;
+  --ink-2: #a1a1a1;
+  --ink-3: #6f6f6f;
+  --slate: #9a9a9a;
+  --slate-2: #696969;
+  --stroke: #2b2b2b;
+  --divider: #2b2b2b;
+  --section-sep: rgba(43, 43, 43, 0.4);
+  --line: rgba(255, 255, 255, 0.10);
+  --line-2: rgba(255, 255, 255, 0.06);
+  --underline: #3f3f3f;
+  --link: #7aa2ff;
+  --ok: #34d058;
+  --ok-bg: #12331d;
+  --ok-fg: #7ee29a;
+  --amber: #e0a94a;
+  --amber-bg: #3a2e18;
+  --badge-amber-bg: #211c13;
+  --badge-amber-fg: #e6bb4b;
+  --quote-mark: #2a2a2a;
+  --cta-bg: #09090b;
+  --cta-border: #2f2f32;
+  --cta-fg: #ffffff;
+  --bar-glass: rgba(26, 26, 26, 0.72);
+  --shadow-card: 0 1px 2px rgba(0,0,0,.4), 0 4px 14px rgba(0,0,0,.35);
+  --shadow-raised: 0 1px 2px rgba(0,0,0,.5), inset 0 0 0 1px rgba(255,255,255,.06);
+  --shadow-pop: 0 14px 34px rgba(16,24,40,.26);
+  --shadow-fade: 0 -12px 48px rgba(16,24,40,.18);
+  --dash-h: repeating-linear-gradient(to right, #2b2b2b 0 6px, transparent 6px 12px);
+  --dash-v: repeating-linear-gradient(to bottom, #2b2b2b 0 6px, transparent 6px 12px);
+  --hatch: repeating-linear-gradient(-45deg, #2b2b2b 0 0.8px, transparent 0.8px 6px);
+  --logo-tile: #ffffff;
+  --footer-bg: #000000;
+  --statue-opacity: 0.55;
+  --grid: url('/grid.svg');
+  --noise: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/><feComponentTransfer><feFuncA type='linear' slope='0.14'/></feComponentTransfer></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  --ruler: url('/ruler.svg');
+}
+
+/* ==========================================================================
+   Light theme
+   ========================================================================== */
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  --page: #fafafb;
+  --panel: #ffffff;
+  --surface: #ffffff;
+  --backdrop: #f5f5f5;
+  --fill-muted: #ededec;
+  --fill-subtle: #f1f1f0;
+  --ink: #141414;
+  --ink-body: #3a3a3d;
+  --ink-muted: #52525b;
+  --ink-2: #5f5f5f;
+  --ink-3: #8a8a8a;
+  --slate: #767676;
+  --slate-2: #949494;
+  --stroke: #e3e3e1;
+  --divider: #e3e3e1;
+  --section-sep: rgba(227, 227, 225, 0.6);
+  --line: rgba(0, 0, 0, 0.10);
+  --line-2: rgba(0, 0, 0, 0.06);
+  --underline: #c4c4c4;
+  --link: #2b5fd9;
+  --ok: #1a7f37;
+  --ok-bg: #dafbe1;
+  --ok-fg: #116329;
+  --amber: #9a6700;
+  --amber-bg: #fff8c5;
+  --badge-amber-bg: #fff8c5;
+  --badge-amber-fg: #7a4f01;
+  --quote-mark: #e8e8e6;
+  --cta-bg: #141414;
+  --cta-border: #2f2f32;
+  --cta-fg: #ffffff;
+  --bar-glass: rgba(255, 255, 255, 0.72);
+  --shadow-card: 0 1px 2px rgba(0,0,0,.06), 0 4px 14px rgba(0,0,0,.08);
+  --shadow-raised: 0 1px 2px rgba(0,0,0,.08), inset 0 0 0 1px rgba(0,0,0,.04);
+  --shadow-pop: 0 14px 34px rgba(16,24,40,.12);
+  --shadow-fade: 0 -12px 48px rgba(16,24,40,.18);
+  --dash-h: repeating-linear-gradient(to right, #e3e3e1 0 6px, transparent 6px 12px);
+  --dash-v: repeating-linear-gradient(to bottom, #e3e3e1 0 6px, transparent 6px 12px);
+  --hatch: repeating-linear-gradient(-45deg, #e3e3e1 0 0.8px, transparent 0.8px 6px);
+  --logo-tile: #ffffff;
+  --footer-bg: #f0f0ed;
+  --statue-opacity: 0.40;
+  --grid: url('/grid-light.svg');
+  --noise: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/><feComponentTransfer><feFuncA type='linear' slope='0.05'/></feComponentTransfer></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  --ruler: url('/ruler-light.svg');
+}
+
+/* ==========================================================================
+   Layout utilities
+   ========================================================================== */
+
+.app {
+  max-width: var(--app-max);
+  margin: 0 auto;
+}
+
+.reveal-col {
+  max-width: var(--reveal);
+  margin: 0 auto;
+}
+
+.case-col {
+  max-width: var(--case-max);
+  margin: 0 auto;
+}
+
+.view-inner {
+  padding: var(--gutter);
+}
+
+/* ==========================================================================
+   Keyframes
+   ========================================================================== */
+
+@keyframes pl-in {
+  0% {
+    opacity: 0;
+    filter: blur(7px);
+    transform: translateY(9px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
+}
+
+@keyframes pl-out {
+  100% {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes ai-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes about-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes ticker-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes exp-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes play-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(90deg);
+  }
+}
+
+/* ==========================================================================
+   Motion utilities
+
+   These live beside their keyframes on purpose. A CSS Module renames every
+   keyframe it references, so `animation: fade ...` inside a *.module.css file
+   silently resolves to nothing. Applying motion from here keeps one definition
+   of each duration and curve.
+   ========================================================================== */
+
+.anim-fade {
+  animation: fade 0.28s ease both;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+
+.anim-pl-in {
+  animation: pl-in 0.42s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.anim-pl-out {
+  animation: pl-out 0.28s ease 0.9s forwards;
+}
+
+.anim-blink {
+  animation: exp-blink 1.4s ease-in-out infinite;
+}
+
+/* Inline tool marquee. The track duplicates its logos, so -50% is one period. */
+.anim-ai-scroll {
+  animation: ai-scroll 16s linear infinite;
+}
+
+.anim-spin-open {
+  animation: play-spin 0.2s ease forwards;
+}
+
+.anim-spin-close {
+  animation: play-spin 0.2s ease reverse forwards;
+}
+
+/* ==========================================================================
+   Reduced motion
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  /* Marquees are switched off, not sped up. */
+  [data-marquee],
+  [data-marquee] > *,
+  .marquee,
+  .marquee-track {
+    animation: none !important;
+    transform: none !important;
+  }
+}

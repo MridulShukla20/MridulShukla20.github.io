@@ -1,0 +1,51 @@
+.gratitude {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 2vw, 20px);
+  width: 100%;
+  /* Fixed row height so a swap can never reflow the footer. */
+  height: 32px;
+}
+
+.rule {
+  flex: 1;
+  height: 0.8px;
+  background: var(--stroke);
+}
+
+.word {
+  /*
+   * Wide enough that the rules do not visibly jump between short and long
+   * words, but never so wide that it leaves the rules with nothing: at 320px
+   * a flat 240 left them 20px each, which read as a mistake rather than a rule.
+   */
+  min-width: min(240px, 58vw);
+  flex: 0 0 auto;
+  /* Pinned to the line box, so a taller script cannot grow the row. */
+  height: 32px;
+  overflow: hidden;
+  font-size: clamp(17px, 2.3vw, 22px);
+  font-weight: 500;
+  line-height: 32px;
+  text-align: center;
+  /* Steadies glyph advance so the scramble does not jitter the rules. */
+  font-variant-numeric: tabular-nums;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--ink-2);
+  white-space: nowrap;
+  /* Keeps Arabic and Hebrew from reordering their neighbours. */
+  unicode-bidi: isolate;
+  /*
+   * Only the Indic scripts get a webfont, each subset to itself. CJK, Arabic,
+   * Hebrew and Thai resolve to system faces — a full webfont for one word each
+   * is not worth the payload. Scoped here so it never reaches the rest of the app.
+   */
+  font-family:
+    var(--font-manrope),
+    var(--font-noto-devanagari), var(--font-noto-bengali), var(--font-noto-tamil),
+    var(--font-noto-malayalam), var(--font-noto-gujarati), var(--font-noto-gurmukhi),
+    var(--font-noto-telugu), var(--font-noto-kannada),
+    'Hiragino Sans', 'Yu Gothic', 'Microsoft YaHei', 'Malgun Gothic',
+    'Noto Sans CJK SC', 'Segoe UI', Tahoma, sans-serif;
+}

@@ -1,0 +1,129 @@
+.bar {
+  /* Outside the scroller, so it is pinned by construction. */
+  position: relative;
+  z-index: 20;
+  flex: 0 0 auto;
+  height: var(--bar-h-mobile);
+  border-bottom: 0.8px solid var(--stroke);
+  background: var(--page);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 100%;
+  padding: 0 var(--gutter);
+}
+
+.current {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/*
+ * 40px, not 32. This is the only way to the other four views on a phone, and
+ * 32 was under the size a thumb reliably lands on.
+ */
+.chevron {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+  border: 0.8px solid var(--stroke);
+  border-radius: 50%;
+  background: var(--panel);
+  color: var(--ink-2);
+  cursor: pointer;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.chevron:hover {
+  color: var(--ink);
+}
+
+/* Rotation comes from .anim-spin-open / .anim-spin-close in globals.css. */
+.chevronIcon {
+  display: inline-flex;
+}
+
+.sheet {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  /*
+   * Capped and scrollable. On a landscape phone the sheet is taller than what
+   * is left of the viewport under the bar, and the last nav item fell off it.
+   */
+  max-height: calc(100dvh - var(--bar-h-mobile));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 12px var(--gutter) 16px;
+  border-bottom: 0.8px solid var(--stroke);
+  background: var(--panel);
+  box-shadow: var(--shadow-pop);
+  animation:
+    sheet-fade 0.18s ease both,
+    sheet-rise 0.2s cubic-bezier(0.34, 1.5, 0.6, 1) both;
+}
+
+@keyframes sheet-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes sheet-rise {
+  from {
+    transform: translateY(-6px);
+  }
+  to {
+    transform: none;
+  }
+}
+
+.sheetFoot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 12px;
+  margin-top: 8px;
+  border-top: 0.8px solid var(--stroke);
+}
+
+.sheetMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px 12px;
+  padding-top: 12px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--slate);
+}
+
+@media (min-width: 1012px) {
+  .bar {
+    display: none;
+  }
+}

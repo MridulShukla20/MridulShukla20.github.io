@@ -1,0 +1,223 @@
+/*
+ * A timeline. One rail runs the height of the list, and each entry's logo is
+ * a node on it — the tile has its own background, so it covers the rail where
+ * it crosses.
+ */
+.timeline {
+  position: relative;
+  max-width: none;
+  list-style: none;
+}
+
+/*
+ * The rail. Starts and ends at the centre of the first and last logo rather
+ * than at the list's edges — a line that runs past its last node reads as a
+ * line that goes somewhere else.
+ */
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 16px;
+  bottom: 16px;
+  left: 15.6px;
+  width: 0.8px;
+  background: var(--stroke);
+}
+
+.entry + .entry {
+  margin-top: clamp(32px, 4.3vw, 48px);
+}
+
+/*
+ * The "/////" band — the same 14px hatch the home experience block closes
+ * with, at the same step below the last entry as the entries keep between
+ * themselves.
+ */
+.hatch {
+  height: 14px;
+  margin-top: clamp(32px, 4.3vw, 48px);
+  background-image: var(--hatch);
+}
+
+/*
+ * The Reveal wrapper is the grid: logo in the first column, everything else
+ * stacked in the second. A fixed logo column, so every entry's text starts on
+ * the same x.
+ */
+.grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  column-gap: 16px;
+  align-items: start;
+}
+
+/* ---------- Node ---------- */
+
+.logo {
+  grid-row: 1;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: var(--logo-tile);
+  box-shadow: 0 0 0 0.8px var(--line);
+}
+
+/* An entry with no logo still needs a node, or the rail looks unbroken. */
+.logoEmpty {
+  display: block;
+  background: var(--panel);
+  border: 0.8px dashed var(--stroke);
+  box-shadow: none;
+}
+
+/* ---------- Header ---------- */
+
+.head {
+  grid-column: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 8px;
+  min-height: 32px;
+  /* Baseline-sits on the tile's vertical centre. */
+  padding-top: 4px;
+}
+
+.company {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  color: var(--ink);
+}
+
+.employment {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.84px;
+  color: var(--ink-3);
+}
+
+.dot {
+  color: var(--ink-3);
+}
+
+/*
+ * Between H3 and H1 on the scale — the same size the project cards set their
+ * titles at, so the two views agree on how loud a heading is.
+ */
+.role {
+  grid-column: 2;
+  margin-top: 12px;
+  font-size: clamp(18px, 2vw, 20px);
+  font-weight: 500;
+  line-height: 28px;
+  letter-spacing: -0.2px;
+  color: var(--ink);
+}
+
+.meta {
+  grid-column: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 8px;
+  margin-top: 4px;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--ink-3);
+}
+
+/* Dates set upper and tracked, the way the site sets every date. */
+.dates {
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ---------- Bullets ---------- */
+
+.bullets {
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+  list-style: none;
+}
+
+/*
+ * The ✦ is the site's own mark — it closes the nameplate on home — set small
+ * and quiet here so it points rather than decorates.
+ */
+.bullet {
+  position: relative;
+  padding-left: 24px;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 24px;
+  color: var(--ink-body);
+}
+
+.bullet::before {
+  content: '✦';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 16px;
+  font-size: 11px;
+  line-height: 24px;
+  text-align: center;
+  color: var(--ink-3);
+}
+
+/* ---------- Narrow ---------- */
+
+/*
+ * The rail and the 32px column cost 48px of a 350px line. Below 640 the logo
+ * sits inline with the company name instead, and the text takes the width.
+ */
+@media (max-width: 639px) {
+  .timeline::before {
+    display: none;
+  }
+
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .logo {
+    grid-row: auto;
+    width: 28px;
+    height: 28px;
+    margin-bottom: 8px;
+  }
+
+  .head,
+  .role,
+  .meta,
+  .bullets {
+    grid-column: 1;
+  }
+
+  .head {
+    min-height: 0;
+    padding-top: 0;
+  }
+
+  .role {
+    margin-top: 8px;
+  }
+
+  .bullets {
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .bullet {
+    padding-left: 20px;
+  }
+}

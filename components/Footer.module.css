@@ -1,0 +1,136 @@
+/*
+ * Behind the shell and exactly as wide, so it reads as the same sheet carrying
+ * on below. No side strokes, matching the shell — only the top edge, which is
+ * the seam the shell's lower edge lifts away from.
+ */
+.footer {
+  position: relative;
+  width: 100%;
+  /*
+   * No padding here. Any gap between this box's top edge and .inner shows the
+   * footer's own background as a strip of a third colour above the gratitude
+   * row — obvious in light mode, where --page and --footer-bg differ. The
+   * spacing lives inside .inner instead, on the footer surface.
+   */
+  padding: 0;
+  overflow-x: hidden;
+  border-top: 0.8px solid var(--stroke);
+  border-radius: 0;
+  background: var(--footer-bg);
+}
+
+/*
+ * The one place grain appears. Tiled at the SVG's native 140px so the noise
+ * keeps its film-grain fineness — scaling it up turns the same texture into
+ * coarse mottling. The light theme's --noise is a gentler slope, since the
+ * dark one reads as dirt on a pale surface.
+ */
+.inner {
+  /*
+   * Owns the footer's whole surface, top edge included. The 64px matches the
+   * quote block's own top padding below the gratitude row, so that row sits
+   * evenly between the footer's edge and the quote.
+   */
+  padding-top: clamp(36px, 5.7vw, 64px);
+  background-color: var(--footer-bg);
+  background-image: var(--noise);
+  background-size: 140px 140px;
+  background-position: 0 0;
+  background-repeat: repeat;
+}
+
+/* ==========================================================================
+   Quote — the one place Fraunces is used
+   ========================================================================== */
+
+.quoteBlock {
+  padding: clamp(36px, 5.7vw, 64px) var(--gutter) clamp(32px, 4.3vw, 48px);
+  text-align: center;
+}
+
+.quoteMark {
+  display: block;
+  margin-bottom: clamp(8px, 1.4vw, 16px);
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-size: clamp(34px, 4.3vw, 48px);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.quote {
+  max-width: var(--reveal);
+  margin: 0 auto;
+  font-family: var(--font-fraunces), Georgia, serif;
+  /* The scale's two quote sizes, joined: 22px on a phone, 32px from 940 up. */
+  font-size: clamp(22px, 3.4vw, 32px);
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+/* ==========================================================================
+   Credits — stacked pair on the left, © on the right
+   ========================================================================== */
+
+.creditsRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 var(--gutter);
+}
+
+.credits {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Matched leading, so the © sits on the first line's baseline under flex-start. */
+.crafted,
+.craftedSub,
+.copyright {
+  font-weight: 400;
+  line-height: 18px;
+}
+
+.crafted {
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+
+.craftedSub {
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+.copyright {
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+/* The highlight; the words around it stay quiet. */
+.craftedAccent {
+  font-weight: 500;
+  color: var(--ink-muted);
+}
+
+/* ==========================================================================
+   Statue — full bleed, flush to the bottom of the shell, under the grain
+   ========================================================================== */
+
+.art {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 24px;
+  opacity: var(--statue-opacity);
+}
+@media (max-width: 639px) {
+  .creditsRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}

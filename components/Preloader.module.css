@@ -1,0 +1,30 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--page);
+}
+
+/*
+ * The pre-paint script in layout.tsx stamps html[data-preload] before the
+ * first frame, so a repeat visit never sees the overlay flash.
+ */
+:global(html[data-preload='skip']) .overlay {
+  display: none;
+}
+
+.text {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 24px;
+  color: var(--ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay {
+    display: none;
+  }
+}

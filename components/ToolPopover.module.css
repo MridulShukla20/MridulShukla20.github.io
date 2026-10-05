@@ -1,0 +1,119 @@
+/*
+ * The trigger phrase. Underlined at rest, link-coloured on hover, with the
+ * tool pill rising above it.
+ */
+.trigger {
+  position: relative;
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--underline);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color 0.15s ease;
+}
+
+.trigger:hover,
+.trigger:focus-within {
+  color: var(--link);
+  text-decoration-color: var(--link);
+}
+
+/*
+ * Floats above the line rather than sitting in it, so the paragraph's rhythm
+ * is identical whether or not the pill is showing.
+ */
+.pill {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  width: 152px;
+  height: 40px;
+  overflow: hidden;
+  border: 0.8px solid var(--stroke);
+  border-radius: 999px;
+  background: var(--panel);
+  box-shadow: var(--shadow-pop);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(4px);
+  transition:
+    opacity 0.16s,
+    transform 0.2s cubic-bezier(0.34, 1.5, 0.6, 1);
+}
+
+.trigger:hover .pill,
+.trigger:focus-within .pill {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/*
+ * Nothing on a touch screen can hover, so the pill was unreachable there and
+ * still cost 34 image requests. It also sat 152px wide, centred on a word that
+ * can land anywhere in the line -- at 390px it overhung the viewport edge.
+ * The sentence carries the meaning on its own; the pill is the pointer bonus.
+ */
+@media not all and (hover: hover) {
+  .pill {
+    display: none;
+  }
+
+  /* Without the pill the underline promises something that cannot happen. */
+  .trigger {
+    text-decoration: none;
+  }
+}
+
+/*
+ * The mask sits on the track, not the pill — masking the pill would fade its
+ * own border and background out at the ends. A mask reads alpha only, so
+ * currentColor supplies opacity without introducing a colour.
+ */
+.track {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  /*
+   * No gap. Each cell carries its own width, so the track is exactly twice the
+   * first pass and translateX(-50%) lands on a seam that does not exist.
+   */
+  will-change: transform;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    currentColor 14%,
+    currentColor 86%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    currentColor 14%,
+    currentColor 86%,
+    transparent
+  );
+}
+
+.cell {
+  flex: 0 0 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/*
+ * Brand-coloured chips — no filter, or the colour they carry would be lost.
+ * Each file's circle fills its box exactly, so the ring lands on the chip's
+ * own edge. It is what keeps the white chips (Figma, Notion, GitHub, Vercel,
+ * Cursor, LangChain) delineated against the light theme's white pill.
+ */
+.logo {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  border-radius: 50%;
+  box-shadow: 0 0 0 0.8px var(--line);
+}

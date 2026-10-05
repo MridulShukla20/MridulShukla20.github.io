@@ -1,0 +1,195 @@
+/*
+ * Same measure as home — the full main column, not the 640px reading width.
+ * The rows are tabular and need the room on the right of the label column.
+ */
+.stack {
+  max-width: none;
+}
+
+/* ---------- Header ---------- */
+
+.head {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.84px;
+  color: var(--ink-3);
+}
+
+.heading {
+  margin-top: 12px;
+  /* The scale's two H1 sizes, joined rather than switched between. */
+  font-size: clamp(18px, 2.2vw, 24px);
+  font-weight: 700;
+  line-height: 1.33;
+  letter-spacing: -0.017em;
+  color: var(--ink);
+}
+
+/*
+ * One word, one colour — the page's only accent, spent here rather than
+ * sprinkled across forty pills.
+ *
+ * Amber, not --link: nothing here is clickable, and the link blue is the one
+ * colour on this site that promises it is.
+ */
+.accent {
+  color: var(--amber);
+}
+
+/* The masthead's rule, repeated so the two views read as one site. */
+.rule {
+  height: 0.8px;
+  margin-top: clamp(20px, 2.6vw, 24px);
+  background: linear-gradient(
+    to right,
+    var(--stroke) 0%,
+    var(--stroke) 58%,
+    transparent 100%
+  );
+}
+
+.lede {
+  margin-top: 14px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.2px;
+  color: var(--ink-2);
+}
+
+/* ---------- Groups ---------- */
+
+.groups {
+  /* 24 here + the first row's own 24 gives the 48px step the home column uses. */
+  margin-top: 24px;
+  list-style: none;
+}
+
+.groups > li {
+  padding-block: clamp(20px, 2.6vw, 24px);
+}
+
+/* Hairlines between rows only — the header's rule already closes the top. */
+.groups > li + li {
+  border-top: 0.8px solid var(--stroke);
+}
+
+/*
+ * The "/////" band — the same 14px hatch home and experience close with. The
+ * last row carries its own bottom padding, so the band's margin is only what
+ * tops that up to the 48px step.
+ */
+.hatch {
+  height: 14px;
+  margin-top: 24px;
+  background-image: var(--hatch);
+}
+
+/*
+ * A fixed label column rather than an intrinsic one: `auto` would resolve
+ * against each row's own title, and the pills would start on a different x
+ * in every row.
+ */
+.row {
+  display: grid;
+  /*
+   * Fluid but viewport-driven, not content-driven: every row resolves the same
+   * number at a given width, so the pills still start on one x, which an
+   * intrinsic column could never promise.
+   */
+  grid-template-columns: clamp(148px, 24vw, 200px) minmax(0, 1fr);
+  column-gap: clamp(16px, 2.4vw, 24px);
+  align-items: start;
+}
+
+/*
+ * Set as micro, not as a heading. The category is an annotation on the pills;
+ * it comes up one step when the row is hovered, the way the home masthead's
+ * closing phrase does.
+ */
+.groupTitle {
+  /* Optically level with the first row of pills, which sit 7px inside. */
+  padding-top: 8px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.84px;
+  color: var(--ink-3);
+  transition: color 0.15s ease;
+}
+
+.row:hover .groupTitle {
+  color: var(--ink-2);
+}
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+}
+
+.pill {
+  padding: 6px 14px;
+  border: 0.8px solid var(--stroke);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  white-space: nowrap;
+  transition:
+    transform 0.26s cubic-bezier(0.34, 1.3, 0.6, 1),
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+/* A millimetre of lift. Forty of these move at once; any more would ripple. */
+.pill:hover {
+  transform: translateY(-1px);
+  background: var(--fill-muted);
+  border-color: var(--line);
+  color: var(--ink);
+}
+
+/* ---------- Mobile ---------- */
+/* ---------- Narrow ---------- */
+
+/*
+ * 640, matching the home column. A tablet keeps the two-column row — at 768
+ * the label column is 184px and the pills still have 480 to run in, which is
+ * more than a 1012px desktop gives them.
+ */
+@media (max-width: 639px) {
+  /* The label stacks over its pills; a 200px column would leave nothing. */
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 12px;
+  }
+
+  .groupTitle {
+    padding-top: 0;
+  }
+
+  .groups > li {
+    padding-block: 20px;
+  }
+
+  /*
+   * Long entries are allowed to wrap here rather than push a row wider than
+   * the viewport — "Stakeholder & Client Management" does not fit at 360px.
+   */
+  .pill {
+    white-space: normal;
+  }
+}

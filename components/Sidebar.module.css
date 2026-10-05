@@ -1,0 +1,45 @@
+/*
+ * Static, not sticky. The shell it sits in never scrolls, so there is nothing
+ * for the sidebar to hold itself against — it simply never moves.
+ */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+  position: static;
+  width: var(--sidebar-w);
+  height: 100%;
+  /* 8 here plus the nav's own 16 puts 24px above the first item. */
+  padding-top: 8px;
+  overflow-y: auto;
+  border-right: 0.8px solid var(--stroke);
+}
+
+.spacer {
+  flex: 1;
+}
+
+.foot {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  border-top: 0.8px solid var(--stroke);
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--slate);
+}
+
+@media (max-width: 1011px) {
+  .sidebar {
+    display: none;
+  }
+}

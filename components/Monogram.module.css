@@ -1,0 +1,28 @@
+.monogram {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 0.8px solid var(--stroke);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  flex: 0 0 auto;
+}
+
+/*
+ * Matches the chevron opposite it. On a pointer device 36px is a comfortable
+ * mark; under a thumb it is a miss.
+ */
+@media (pointer: coarse) {
+  .monogram {
+    width: 40px;
+    height: 40px;
+  }
+}

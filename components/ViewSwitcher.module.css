@@ -1,0 +1,205 @@
+.skip {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip:focus {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 60;
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 8px 14px;
+  overflow: visible;
+  clip-path: none;
+  border: 0.8px solid var(--stroke);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 20px;
+  text-decoration: none;
+  box-shadow: var(--shadow-pop);
+}
+
+/* ==========================================================================
+   Footer layer — fixed to the viewport floor, behind the shell
+   ========================================================================== */
+
+/*
+ * The shell's own geometry, one layer down: same width, same centring, so the
+ * side strokes run straight from the shell into the footer as one line and the
+ * ruler gutters stay clear on both sides.
+ */
+.footerLayer {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  width: 100%;
+  max-width: var(--app-max);
+}
+
+/* ==========================================================================
+   The shell — a fixed-height panel that never scrolls, only lifts
+
+   Nothing inside it moves on scroll: the sidebar and the status row are held
+   still by construction, because the scroller is a box further in. The lift
+   is what uncovers the footer fixed behind it.
+   ========================================================================== */
+
+.shell {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  z-index: 2;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  max-width: var(--app-max);
+  height: 100vh;
+  height: 100dvh;
+  overflow: clip;
+  border-left: 0.8px solid var(--stroke);
+  border-right: 0.8px solid var(--stroke);
+  border-radius: 0;
+  background: var(--page);
+  transform-origin: top center;
+  /*
+   * No transition. The transform is written from the wheel handler and has to
+   * track the gesture 1:1 — a curve here would trail the wheel, not follow it.
+   * The inline transform carries translate(-50%, …); this is the fallback for
+   * the first paint before React attaches it.
+   */
+  transform: translate(-50%, 0);
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+}
+
+.main:focus {
+  outline: none;
+}
+
+/* ==========================================================================
+   Main top — status on the left, theme toggle on the right
+
+   Not sticky. It sits outside the scroller, so it is pinned by construction.
+   ========================================================================== */
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex: 0 0 auto;
+  /* min-height, not height: the status is allowed to take two lines on a phone. */
+  min-height: var(--bar-h);
+  padding: 8px var(--gutter);
+}
+
+/*
+ * Wraps rather than truncates. At 320px the role alone is wider than the room
+ * beside the label, and an ellipsis there cut the word mid-parenthesis.
+ */
+.status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 9px;
+  min-width: 0;
+}
+
+.available,
+.role {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.available {
+  color: var(--ok);
+}
+
+.role {
+  color: var(--ink);
+}
+
+.sep {
+  color: var(--ink-3);
+}
+
+/* Dimmer, not a different hue. Size and tracking are inherited. */
+.roleAccent {
+  color: var(--ink-3);
+}
+
+.divider {
+  flex: 0 0 auto;
+  height: 1px;
+  background: var(--dash-h);
+}
+
+/* ==========================================================================
+   Scroll area — the only scrolling element on the page
+   ========================================================================== */
+
+.scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/*
+ * No clamp here. Each view sets its own measure — home runs the full column,
+ * and the case-study view will take --case-max — so the shell does not impose
+ * one width on all of them.
+ */
+.reading {
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* The sheet locks the column's scroll, since the body no longer owns it. */
+:global(html[data-sheet='open']) .scroll {
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   Mobile — sidebar gone, shell full width
+   ========================================================================== */
+
+@media (max-width: 1011px) {
+  .shell,
+  .footerLayer {
+    max-width: none;
+  }
+
+  /* Full-bleed, so the side strokes would sit on the viewport edges. */
+  .shell {
+    border-left: 0;
+    border-right: 0;
+  }
+
+  /* The sheet carries the toggle on mobile, so the top row does not. */
+  .toggle {
+    display: none;
+  }
+}

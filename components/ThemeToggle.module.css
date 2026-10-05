@@ -1,0 +1,86 @@
+.pill {
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  gap: 2px;
+  height: 30px;
+  padding: 3px;
+  border: 0.8px solid var(--stroke);
+  border-radius: 999px;
+  background: var(--fill-subtle);
+}
+
+.thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 26px;
+  height: 22.4px;
+  border-radius: 999px;
+  background: var(--panel);
+  box-shadow: var(--shadow-raised);
+  pointer-events: none;
+  transition:
+    transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+    width 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+    height 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pill[data-mode='light'] .thumb {
+  transform: translateX(0);
+}
+
+.pill[data-mode='dark'] .thumb {
+  transform: translateX(28px);
+}
+
+.segment {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-3);
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.segment:hover {
+  color: var(--ink-2);
+}
+
+.segment[aria-pressed='true'] {
+  color: var(--ink);
+}
+
+/*
+ * The toggle only appears on touch inside the mobile sheet, where 26x22 is too
+ * small to hit. Everything scales together — the thumb travel is the segment
+ * width plus the 2px gap, so it has to move with them.
+ */
+@media (pointer: coarse) {
+  .pill {
+    height: 40px;
+    padding: 4px;
+  }
+
+  .thumb {
+    top: 4px;
+    left: 4px;
+    width: 36px;
+    height: 30.4px;
+  }
+
+  .pill[data-mode='dark'] .thumb {
+    transform: translateX(38px);
+  }
+
+  .segment {
+    width: 36px;
+  }
+}

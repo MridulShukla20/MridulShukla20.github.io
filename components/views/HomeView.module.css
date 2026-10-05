@@ -1,0 +1,526 @@
+/*
+ * The home column runs the full width of the main column rather than the 640px
+ * reading measure, matching the reference — the experience rows are tabular
+ * and need the room, and the prose sits at the same width beside them.
+ */
+.home {
+  max-width: none;
+}
+
+/*
+ * Vertical rhythm. 48px is the default step; the dashed separator asks for 32px
+ * on both of its sides, which is why this is margin-driven rather than a
+ * flex `gap` — a gap cannot be overridden by one child.
+ */
+.home > * + * {
+  margin-top: clamp(32px, 5vw, 48px);
+}
+
+.home > .sepBlock,
+.home > .sepBlock + * {
+  margin-top: clamp(24px, 3.4vw, 32px);
+}
+
+/* ---------- Masthead ---------- */
+
+.masthead {
+  display: flex;
+  flex-direction: column;
+}
+
+/*
+ * A nameplate, not a heading. Set at a size the type scale does not cover,
+ * weight 800, and tracked in hard — at 64px the default spacing reads loose
+ * and generic, and the negative tracking is what turns the name into a mark.
+ */
+.name {
+  /*
+   * Fluid between the two sizes the design already had: 64px on the desktop,
+   * untouched, and 38px on a phone. The line through (390, 38) and (690, 64)
+   * joins them, so every width in between gets its own size rather than one of
+   * two, and nothing jumps at a breakpoint.
+   *
+   * Width is not the binding constraint here. The name and its mark run 6.1x
+   * the font size, so 64px asks for 390px and the narrowest column in the app
+   * is 280. The floor is there because the nameplate stops reading as one mark
+   * below about 32px, not because it would overflow.
+   */
+  font-size: clamp(32px, 8.7vw + 4px, 64px);
+  font-weight: 800;
+  /* 1.0 leading — a single line needs no room above or below its own cap band. */
+  line-height: 1;
+  /* In em, so tracking thins with the size instead of closing the letters up. */
+  letter-spacing: -0.047em;
+  color: var(--ink);
+  /* One line is the whole idea; it must not fold at any width. */
+  white-space: nowrap;
+}
+
+/*
+ * The ✦ used to be its own divider row above the bio. Absorbed into the
+ * nameplate it is a signature rather than furniture, and the one thing here
+ * that answers to the cursor.
+ *
+ * Set like a footnote marker rather than a trailing character — centred on the
+ * name's cap band, where it annotates the name instead of sitting in it. Its
+ * own tracking, since the nameplate's -3px would crowd it.
+ */
+.mark {
+  display: inline-block;
+  /* All three in em, so the mark tracks the nameplate at every fluid size. */
+  margin-left: 0.28em;
+  font-size: 0.25em;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: normal;
+  /*
+   * Measured, not guessed: Manrope caps are 0.75em (48px here) and the glyph
+   * has no descent, so this centres it on the name's cap band exactly.
+   */
+  vertical-align: 1.14em;
+  color: var(--ink-3);
+  transition:
+    transform 0.26s cubic-bezier(0.34, 1.3, 0.6, 1),
+    color 0.15s ease;
+}
+
+/*
+ * 45deg, not 90 — the glyph has four-fold symmetry, so a quarter turn maps it
+ * onto itself and nothing appears to happen. An eighth turn is the most it can
+ * visibly move: star to diamond and back.
+ */
+.masthead:hover .mark {
+  transform: rotate(45deg);
+  color: var(--ink-2);
+}
+
+/*
+ * Closes the nameplate. Held solid across the name's own measure, then let go
+ * toward the right edge — a flat hairline reads as a border, this reads as a
+ * decision, and the fade keeps the eye on the name rather than the frame.
+ */
+.mastheadRule {
+  height: 0.8px;
+  margin-top: clamp(20px, 3.4vw, 32px);
+  background: linear-gradient(
+    to right,
+    var(--stroke) 0%,
+    var(--stroke) 58%,
+    transparent 100%
+  );
+}
+
+/*
+ * Opened up against the nameplate's tightness — that contrast is the point —
+ * and bound to the rule above it rather than floating between the two.
+ */
+.subtitle {
+  margin-top: 14px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.2px;
+  color: var(--ink-2);
+}
+
+.subtitleSep {
+  margin: 0 8px;
+  color: var(--ink-3);
+}
+
+/*
+ * The closing phrase is an aside, so it sits one step back and comes up to meet
+ * the others on hover — the whole interaction, and deliberately the only one.
+ */
+.subtitleAside {
+  color: var(--ink-3);
+  transition: color 0.15s ease;
+}
+
+.masthead:hover .subtitleAside {
+  color: var(--ink-2);
+}
+
+/* ---------- Prose ---------- */
+
+.bio {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 24px;
+  color: var(--ink);
+}
+
+.prose {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 24px;
+  color: var(--ink-body);
+}
+
+/* ---------- Dashed separator ---------- */
+
+.separator {
+  height: 1px;
+  background: var(--dash-h);
+}
+
+/* ---------- Experience ---------- */
+
+/*
+ * The "/////" band. Short enough that each stroke reads as a tick rather than
+ * a long diagonal — at 28px the same gradient reads as a hatched block.
+ */
+.hatch {
+  height: 14px;
+  background-image: var(--hatch);
+}
+
+.expSection {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* No bottom margin — .expSection's gap owns the spacing between blocks. */
+.expHead {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* The label carries its own bottom margin elsewhere; here the row owns it. */
+.expHead .sectionLabel {
+  margin-bottom: 0;
+}
+
+.statusPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 24px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: var(--ok);
+  color: var(--cta-fg);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: 0.84px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.statusDot {
+  width: 6px;
+  height: 6px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/*
+ * The list is the grid, not each row. A row-level grid resolves its columns
+ * against its own content, so the auto-width date cell — which differs per
+ * row — pushed every role to a different x. One grid, one set of columns.
+ */
+.expList {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr) auto;
+  align-items: center;
+  column-gap: 16px;
+  list-style: none;
+}
+
+/* The row keeps no box of its own, so its cells carry the vertical padding. */
+.expRow {
+  display: contents;
+}
+
+.expCompany,
+.expRole,
+.expDate {
+  padding-block: 8px;
+}
+
+.expCompany {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+/*
+ * Both favicons are marks on transparency rather than full-bleed tiles, and
+ * LambdaTest's is near-black (rgb 18,18,18), so a dark ground swallows it.
+ * A white chip is what a favicon is drawn for; the ring keeps it delineated
+ * against the light theme's pale surface.
+ */
+.expLogo {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  object-fit: contain;
+  border-radius: 8px;
+  background: var(--logo-tile);
+  box-shadow: 0 0 0 0.8px var(--line);
+}
+
+/* The "Next?" row has no employer yet, so its tile is an outline. */
+.expLogoEmpty {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  border: 0.8px dashed var(--stroke);
+  border-radius: 8px;
+}
+
+.expName {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 24px;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.expRole {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 24px;
+  color: var(--ink-body);
+  min-width: 0;
+}
+
+.expDate {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0.84px;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  text-align: right;
+  white-space: nowrap;
+}
+
+/*
+ * The handwritten annotation row — the one place Caveat is used. It overshoots
+ * its line box far more than Manrope does, so the ellipsis clamp on .expName
+ * was slicing the glyphs. Nothing clips on this row.
+ */
+.expNext .expName,
+.expNext .expRole {
+  font-family: var(--font-caveat), cursive;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 32px;
+  color: var(--ink);
+  overflow: visible;
+  text-overflow: clip;
+}
+
+/* The handwritten row needs a touch more air than the typeset ones. */
+.expNext .expCompany,
+.expNext .expRole,
+.expNext .expDate {
+  padding-block: 12px;
+}
+
+/* ---------- Resume + email ---------- */
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+
+.resume {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 18px;
+  color: var(--cta-fg);
+  background: var(--cta-bg);
+  border: 0.8px solid var(--cta-border);
+  border-radius: 999px;
+  padding: 10px 18px;
+  text-decoration: none;
+  transition:
+    transform 0.1s,
+    background 0.15s,
+    box-shadow 0.15s;
+}
+
+.resume:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-raised);
+}
+
+.resumeDisabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.resumeDisabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.copy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  /* Held steady so the "Copied" swap cannot resize the button. */
+  min-width: 140px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 18px;
+  color: var(--ink-muted);
+  background: transparent;
+  border: 0.8px solid var(--stroke);
+  border-radius: 999px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition:
+    transform 0.1s,
+    background 0.15s,
+    box-shadow 0.15s;
+}
+
+.copy:hover {
+  transform: translateY(-1px);
+  background: var(--fill-muted);
+}
+
+/* ---------- About ---------- */
+
+.sectionLabel {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.84px;
+  color: var(--ink-3);
+  margin-bottom: 16px;
+}
+
+.aboutHeading {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 28px;
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+
+.aboutBody {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ---------- Mobile ---------- */
+/*
+ * The date has a long and a short form in the content already; only one of the
+ * pair is ever in the layout, so only one is ever announced.
+ */
+.dateShort {
+  display: none;
+}
+
+/* ---------- Narrow ---------- */
+
+/*
+ * 640, not 1011. Losing the sidebar is not the same as losing the room — a
+ * tablet at 768 has a wider content column than a 1012px desktop does, and it
+ * was being handed the phone's stacked layout for no reason at all.
+ */
+@media (max-width: 639px) {
+  /*
+   * Flex, not the two-column grid this used to be. Under `display: contents`
+   * the row still emitted three cells into a two-column grid, and the third
+   * was auto-placed after the full-width role — so every date landed on the
+   * next row, beside the following company. Two columns cannot hold three
+   * cells; the wrap has to be the thing that makes the second line.
+   */
+  .expList {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .expRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 12px;
+    padding-block: 8px;
+  }
+
+  /* The cells carried the padding for the grid; the row owns it now. */
+  .expCompany,
+  .expRole,
+  .expDate {
+    padding-block: 0;
+  }
+
+  .expCompany {
+    flex: 1 1 auto;
+  }
+
+  /* Ordered, not moved in the DOM: company and date share the top line... */
+  .expDate {
+    order: 1;
+    flex: 0 0 auto;
+  }
+
+  /* ...and the role takes a full line of its own under them. */
+  .expRole {
+    order: 2;
+    flex: 1 0 100%;
+    /* 28px tile + 12px gap, so it lines up under the company name. */
+    padding-left: 40px;
+  }
+
+  .expNext .expCompany,
+  .expNext .expRole,
+  .expNext .expDate {
+    padding-block: 0;
+  }
+
+  .expNext {
+    padding-block: 12px;
+  }
+
+  /* "Mar 2025 — Mar 2026" is 4px wider than the cell it has to share here. */
+  .dateLong {
+    display: none;
+  }
+
+  .dateShort {
+    display: inline;
+  }
+}
+
+/*
+ * Under 480 the pair cannot sit on one line without wrapping anyway, so they
+ * stack on purpose: full width, and tall enough to be a thumb target rather
+ * than a mouse target.
+ */
+@media (max-width: 479px) {
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .resume,
+  .copy {
+    justify-content: center;
+    min-height: 44px;
+  }
+}
