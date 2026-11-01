@@ -39,7 +39,8 @@ export const work: WorkItem[] = [
         kind: 'dictation',
         label: 'Hold · speak · release',
         key: 'fn',
-        boundary: 'On device',
+        boundary: 'Stays on the Mac',
+        stages: ['Voice', 'On-device model', 'Text'],
         metric: '127 ms',
         metricLabel: 'Release to text, median',
       },
@@ -93,7 +94,7 @@ export const work: WorkItem[] = [
     skills: ['Product strategy', 'User research', 'Retention'],
     cover: {
       art: {
-        kind: 'waffle',
+        kind: 'insight',
         label: 'YouTube Premium',
         logo: '/companies/youtube.png',
         figure: '40%',
@@ -137,6 +138,7 @@ export const work: WorkItem[] = [
         kind: 'transform',
         label: 'From what you have',
         sources: ['PDF', 'Sheet', 'Notes'],
+        sample: 'Annual review',
       },
     },
     facts: [
@@ -177,7 +179,7 @@ export const work: WorkItem[] = [
     skills: ['PRD writing', 'Metrics', 'Prioritisation'],
     cover: {
       art: {
-        kind: 'matrix',
+        kind: 'layers',
         label: 'Configuration allocation',
         columns: ['Desktop', 'Real device', 'Virtual'],
         filter: 'Device name',

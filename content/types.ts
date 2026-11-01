@@ -109,22 +109,24 @@ export type CoverArt =
       key: string;
       /** The tab on the dashed outline: where the work stays. */
       boundary: string;
+      /** The three stops on the line: where it starts, where it is processed, where it lands. */
+      stages: [string, string, string];
       metric: string;
       metricLabel: string;
     }
   | {
-      kind: 'waffle';
+      kind: 'insight';
       label: string;
       /** Path under /public. */
       logo?: string;
       figure: string;
       caption: string;
-      /** Cells lit out of a hundred. 40 reads as 40%. */
+      /** Ticks lit out of a hundred. 40 reads as 40%. */
       filled: number;
       badge: string;
     }
   | {
-      kind: 'matrix';
+      kind: 'layers';
       label: string;
       /** The environment types, one column each. Three. */
       columns: string[];
@@ -140,6 +142,8 @@ export type CoverArt =
       label: string;
       /** What goes in. Three: drawn as a page, a sheet and notes, in that order. */
       sources: string[];
+      /** The slide it becomes: a sample deck title. */
+      sample: string;
     }
   | { kind: 'flow'; label: string };
 

@@ -2,9 +2,9 @@ import type { ComponentType } from 'react';
 import type { CoverArt, WorkItem } from '@/content/types';
 import { DictationCover } from './covers/DictationCover';
 import { FlowCover } from './covers/FlowCover';
-import { MatrixCover } from './covers/MatrixCover';
+import { InsightCover } from './covers/InsightCover';
+import { LayersCover } from './covers/LayersCover';
 import { TransformCover } from './covers/TransformCover';
-import { WaffleCover } from './covers/WaffleCover';
 import styles from './WorkCover.module.css';
 
 type Kind = CoverArt['kind'];
@@ -12,8 +12,8 @@ type Kind = CoverArt['kind'];
 /* Each cover takes the art that names it — the registry is what keeps that honest. */
 const COVERS: { [K in Kind]: ComponentType<{ art: Extract<CoverArt, { kind: K }> }> } = {
   dictation: DictationCover,
-  waffle: WaffleCover,
-  matrix: MatrixCover,
+  insight: InsightCover,
+  layers: LayersCover,
   transform: TransformCover,
   flow: FlowCover,
 };
@@ -21,8 +21,8 @@ const COVERS: { [K in Kind]: ComponentType<{ art: Extract<CoverArt, { kind: K }>
 /** One accent a cover, from the tokens already in the site. */
 const ACCENT: Record<Kind, 'blue' | 'amber' | 'green'> = {
   dictation: 'blue',
-  waffle: 'amber',
-  matrix: 'green',
+  insight: 'amber',
+  layers: 'green',
   transform: 'blue',
   flow: 'amber',
 };
@@ -43,8 +43,6 @@ export function WorkCover({ item }: { item: WorkItem; size?: 'card' | 'hero' }) 
   return (
     <div
       className={styles.cover}
-      /* Re-scopes the dark tokens: the same cover in both themes. */
-      data-theme="dark"
       data-accent={art ? ACCENT[art.kind] : undefined}
       data-kind={art?.kind}
     >
@@ -54,9 +52,9 @@ export function WorkCover({ item }: { item: WorkItem; size?: 'card' | 'hero' }) 
       ) : (
         art && (
           <>
-            <span className={styles.grid} aria-hidden="true" />
-            <span className={styles.glow} aria-hidden="true" />
-            <span className={styles.noise} aria-hidden="true" />
+            <span className={styles.lamp} aria-hidden="true" />
+            {art.kind === 'dictation' && <span className={styles.grid} aria-hidden="true" />}
+            <span className={styles.grain} aria-hidden="true" />
             <div className={styles.board} aria-hidden="true">
               <span className={styles.label}>{art.label}</span>
               <Art art={art} />

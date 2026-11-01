@@ -1,22 +1,25 @@
 /*
- * The stage every cover shares. It is always the dark theme — the cover tag
- * re-scopes the dark tokens — so a thumbnail looks the same in either theme
- * and the cards read as one set. Underneath: the site's dashed grid, fading
- * toward the edges; the site's noise; and one soft glow in the project's accent.
+ * The stage every cover shares — and it has two designs, not one.
  *
- * Everything inside the board is sized in em, and the board's font-size is a
- * fortieth of the cover's width, so a composition is drawn once, on a 40 x 25
- * artboard, and scales as a picture at the card size and the hero size alike.
+ * Dark is warm graphite lifted off the page colour (never the black backdrop),
+ * lit from the top left, with a light edge on every surface. Light is warm
+ * paper, white sheets, and shadow doing the work glow does in the dark. All of
+ * it is mixed from tokens the site already has, so nothing here is a new
+ * colour and the covers follow the theme toggle like everything else.
+ *
+ * Everything inside the board is sized in em; the board's font-size is a
+ * fortieth of the cover's width, so a composition is drawn once on a 40 x 25
+ * artboard and scales as a picture at the card size and the hero size alike.
+ * Where an element sets its own font-size, positions go on a wrapper — em
+ * offsets compound otherwise.
  */
 .cover {
   --accent: var(--link);
-  --glow-x: 50%;
-  --glow-y: 46%;
   position: relative;
   aspect-ratio: 16 / 10;
   overflow: hidden;
   container-type: inline-size;
-  background: var(--backdrop);
+  background: var(--stage);
   color: var(--ink);
   isolation: isolate;
 }
@@ -29,36 +32,74 @@
   --accent: var(--ok);
 }
 
+/* ---------- Dark: warm graphite, lit from above left ---------- */
+
+:global([data-theme='dark']) .cover {
+  --stage: color-mix(in srgb, var(--amber) 3%, color-mix(in srgb, var(--ink) 5%, var(--page)));
+  --sheet: color-mix(in srgb, var(--ink) 8%, var(--page));
+  --sheet-hi: color-mix(in srgb, var(--ink) 12%, var(--page));
+  --sheet-lo: color-mix(in srgb, var(--ink) 3%, var(--page));
+  --rim: color-mix(in srgb, var(--ink) 13%, transparent);
+  --rim-soft: color-mix(in srgb, var(--ink) 7%, transparent);
+  --edge: color-mix(in srgb, var(--ink) 11%, transparent);
+  --shade: color-mix(in srgb, var(--cta-bg) 55%, transparent);
+  --shade-soft: color-mix(in srgb, var(--cta-bg) 35%, transparent);
+  --light: color-mix(in srgb, var(--ink) 9%, transparent);
+  --grain: 0.55;
+  --elev-1: 0 0 0 0.8px var(--rim), inset 0 0.8px 0 var(--edge), 0 0.5em 1.2em var(--shade-soft);
+  --elev-2:
+    0 0 0 0.8px var(--rim), inset 0 0.8px 0 var(--edge), 0 0.4em 0.8em var(--shade-soft),
+    0 1.6em 3em var(--shade);
+}
+
+/* ---------- Light: warm paper, white sheets, shadow for depth ---------- */
+
+:global([data-theme='light']) .cover {
+  --stage: color-mix(in srgb, var(--amber) 5%, var(--page));
+  --sheet: var(--panel);
+  --sheet-hi: var(--panel);
+  --sheet-lo: color-mix(in srgb, var(--amber) 3%, var(--page));
+  --rim: color-mix(in srgb, var(--ink) 11%, transparent);
+  --rim-soft: color-mix(in srgb, var(--ink) 6%, transparent);
+  --edge: var(--panel);
+  --shade: color-mix(in srgb, var(--cta-bg) 16%, transparent);
+  --shade-soft: color-mix(in srgb, var(--cta-bg) 8%, transparent);
+  --light: var(--panel);
+  --grain: 0;
+  --elev-1: 0 0 0 0.8px var(--rim), 0 0.15em 0.4em var(--shade-soft), 0 0.7em 1.6em var(--shade-soft);
+  --elev-2:
+    0 0 0 0.8px var(--rim), 0 0.2em 0.5em var(--shade-soft), 0 0.9em 1.6em var(--shade-soft),
+    0 2em 3.6em var(--shade);
+}
+
+/* ---------- Light source, grid, grain ---------- */
+
+.lamp,
 .grid,
-.noise,
-.glow {
+.grain {
   position: absolute;
   inset: 0;
   pointer-events: none;
 }
 
-.grid {
+.lamp {
   z-index: -3;
+  background: radial-gradient(ellipse 70% 90% at 12% 0%, var(--light), transparent 70%);
+}
+
+.grid {
+  z-index: -2;
   background-image: var(--grid);
   background-size: calc(100cqw / 5);
-  opacity: 0.7;
-  -webkit-mask-image: radial-gradient(ellipse 75% 85% at 50% 50%, var(--ink) 20%, transparent 100%);
-  mask-image: radial-gradient(ellipse 75% 85% at 50% 50%, var(--ink) 20%, transparent 100%);
+  opacity: 0.6;
+  -webkit-mask-image: radial-gradient(ellipse 70% 80% at 50% 50%, var(--ink) 15%, transparent 100%);
+  mask-image: radial-gradient(ellipse 70% 80% at 50% 50%, var(--ink) 15%, transparent 100%);
 }
 
-.glow {
-  z-index: -2;
-  background: radial-gradient(
-    ellipse 55% 65% at var(--glow-x) var(--glow-y),
-    color-mix(in srgb, var(--accent) 18%, transparent),
-    transparent 72%
-  );
-}
-
-.noise {
+.grain {
   z-index: -1;
   background-image: var(--noise);
-  opacity: 0.9;
+  opacity: var(--grain);
 }
 
 /* A hairline just inside the edge, so the stage has an edge of its own. */
@@ -68,7 +109,7 @@
   inset: 0;
   z-index: 3;
   border-radius: inherit;
-  box-shadow: inset 0 0 0 0.8px var(--line-2);
+  box-shadow: inset 0 0 0 0.8px var(--rim-soft);
   pointer-events: none;
 }
 
@@ -111,5 +152,4 @@
   height: 0.55em;
   border-radius: 50%;
   background: var(--accent);
-  box-shadow: 0 0 0.9em var(--accent);
 }

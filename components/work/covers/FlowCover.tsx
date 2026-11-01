@@ -1,93 +1,78 @@
 import styles from './FlowCover.module.css';
 
 /*
- * A Figma prototype is screens plus the wires between them — the connectors
- * that make a set of frames something you can click through. So the cover is
- * three frames and the noodle lines that join them, the middle frame selected
- * the way it is on the canvas. The screens are skeletons: they claim no
- * particular screen of the app.
+ * A banking app is a handset and a card, and a Figma prototype is the wire
+ * between two screens. So: two phones, the front one open on a home screen,
+ * the back one on a sign-in, a prototype connector running from the one to the
+ * other, and a bank card lifted out of the screen toward the viewer. The
+ * screens are skeletons and the card carries no number — the cover claims
+ * nothing about any particular screen of the app.
  */
-
-function SignIn() {
-  return (
-    <>
-      <i className={styles.mark} />
-      <i className={styles.field} />
-      <i className={styles.field} />
-      <i className={styles.button} />
-    </>
-  );
-}
-
-function Home() {
-  return (
-    <>
-      <i className={styles.bar} />
-      <i className={styles.hero} />
-      <span className={styles.actions}>
-        <i />
-        <i />
-        <i />
-        <i />
-      </span>
-      {[0, 1, 2].map((n) => (
-        <span key={n} className={styles.item}>
-          <i />
-          <i />
-        </span>
-      ))}
-    </>
-  );
-}
-
-function List() {
-  return (
-    <>
-      <i className={styles.bar} />
-      {[0, 1, 2, 3, 4].map((n) => (
-        <span key={n} className={styles.item}>
-          <i />
-          <i />
-        </span>
-      ))}
-    </>
-  );
-}
-
-const FRAMES = [
-  { name: '01', Screen: SignIn },
-  { name: '02', Screen: Home },
-  { name: '03', Screen: List },
-];
 
 export function FlowCover() {
   return (
     <>
-      {FRAMES.map(({ name, Screen }, i) => (
-        <div key={name} className={styles.frame} data-n={i + 1} data-selected={i === 1 ? 'true' : 'false'}>
-          <span className={styles.name}>{name}</span>
-          <div className={styles.screen}>
-            <Screen />
-          </div>
-          {i === 1 && (
-            <>
-              <b data-corner="tl" />
-              <b data-corner="tr" />
-              <b data-corner="bl" />
-              <b data-corner="br" />
-            </>
-          )}
+      {/* Back phone: sign in */}
+      <div className={styles.phone} data-n="back">
+        <span className={styles.island} />
+        <div className={styles.screen}>
+          <i className={styles.mark} />
+          <i className={styles.bar} data-w="44" />
+          <i className={styles.field} />
+          <i className={styles.field} />
+          <i className={styles.button} />
         </div>
-      ))}
+      </div>
 
-      <svg className={styles.wires} viewBox="0 0 40 25" preserveAspectRatio="none">
-        <path d="M11.8 14.2 C13.8 14.2 13.6 12.4 15.5 12.4" vectorEffect="non-scaling-stroke" />
-        <path d="M24.2 12.4 C26.2 12.4 26.1 14.6 28 14.6" vectorEffect="non-scaling-stroke" />
+      {/* Front phone: home */}
+      <div className={styles.phone} data-n="front">
+        <span className={styles.island} />
+        <div className={styles.screen}>
+          <span className={styles.greet}>
+            <i className={styles.avatar} />
+            <span>
+              <i className={styles.bar} data-w="70" />
+              <i className={styles.bar} data-w="44" />
+            </span>
+          </span>
+          <i className={styles.balance} />
+          <span className={styles.actions}>
+            <i />
+            <i />
+            <i />
+            <i />
+          </span>
+          {[0, 1, 2].map((n) => (
+            <span key={n} className={styles.item}>
+              <i />
+              <span>
+                <i className={styles.bar} data-w="70" />
+                <i className={styles.bar} data-w="40" />
+              </span>
+              <i className={styles.amount} />
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <svg className={styles.wire} viewBox="0 0 40 25" preserveAspectRatio="none">
+        <path d="M12.6 17.4 C15 17.4 14.6 15.4 17 15.4" vectorEffect="non-scaling-stroke" />
       </svg>
-      <span className={styles.node} data-n="1" />
-      <span className={styles.node} data-n="2" />
-      <span className={styles.node} data-n="3" data-end="true" />
-      <span className={styles.node} data-n="4" data-end="true" />
+      <span className={styles.node} data-end="start" />
+      <span className={styles.node} data-end="end" />
+
+      {/* The card, lifted off the screen */}
+      <div className={styles.card}>
+        <span className={styles.chip} />
+        <span className={styles.lines}>
+          <i />
+          <i />
+        </span>
+        <span className={styles.network}>
+          <i />
+          <i />
+        </span>
+      </div>
     </>
   );
 }

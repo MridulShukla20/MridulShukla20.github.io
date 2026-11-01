@@ -3,31 +3,80 @@ import type { CoverArt } from '@/content/types';
 import styles from './DictationCover.module.css';
 
 /*
- * ezflow's one idea: hold a key, and words appear in the app in front of you —
- * and none of it leaves the machine. The window is generic on purpose (any app
- * will do, that is the point), the key is held down, and the dashed outline is
- * the edge of the Mac.
+ * ezflow, as a line with three stops: a voice, a model on the Mac, and text.
+ * The ring is the voice — a waveform bent round the key that is held down. The
+ * chip is the model, with its pins out. The window is wherever the words land.
+ * The dashed outline around all of it is the claim the product makes: none of
+ * this leaves the machine. The number underneath is the speed it reports.
  */
 
-const WAVE = [
-  0.25, 0.4, 0.3, 0.6, 0.45, 0.8, 0.55, 1, 0.7, 0.9, 0.5, 0.75, 0.4, 0.6, 0.3, 0.45, 0.25, 0.35,
-];
+/** A voice has a loud middle and quiet ends; the ring wraps the same shape twice. */
+const RING = Array.from({ length: 56 }, (_, i) => {
+  const a = (i / 56) * Math.PI * 2;
+  return 0.18 + 0.82 * Math.abs(Math.sin(a * 3.5 + 0.6) * Math.cos(a * 1.5));
+});
 
-/* Text arriving: the lines fade as they get further from the caret. */
-const LINES: { w: number; o: number }[] = [
-  { w: 88, o: 0.95 },
-  { w: 94, o: 0.8 },
-  { w: 72, o: 0.55 },
-  { w: 38, o: 0.35 },
+const PINS = [0, 1, 2, 3, 4];
+
+/* The text resolves: solid where it has landed, dotted where it is still arriving. */
+const LINES: { w: number; solid: boolean }[] = [
+  { w: 90, solid: true },
+  { w: 78, solid: true },
+  { w: 84, solid: true },
+  { w: 46, solid: false },
 ];
 
 export function DictationCover({ art }: { art: Extract<CoverArt, { kind: 'dictation' }> }) {
+  const [from, via, to] = art.stages;
+
   return (
     <>
       <div className={styles.boundary}>
         <span className={styles.boundaryTag}>{art.boundary}</span>
       </div>
 
+      <svg className={styles.wire} viewBox="0 0 40 25" preserveAspectRatio="none">
+        <path d="M13.9 11.7 H15.9" vectorEffect="non-scaling-stroke" />
+        <path d="M24.1 11.7 H26.3" vectorEffect="non-scaling-stroke" />
+      </svg>
+
+      {/* Voice */}
+      <div className={styles.voice}>
+        <svg viewBox="0 0 100 100">
+          {RING.map((level, i) => (
+            <line
+              key={i}
+              x1="50"
+              y1={50 - 28}
+              x2="50"
+              y2={50 - 28 - level * 20}
+              transform={`rotate(${(i / RING.length) * 360} 50 50)`}
+              style={{ opacity: 0.35 + level * 0.65 }}
+            />
+          ))}
+        </svg>
+        <span className={styles.keycap}>
+          <b>{art.key}</b>
+        </span>
+      </div>
+      <span className={styles.stage} data-n="1">
+        <b>{from}</b>
+      </span>
+
+      {/* Model */}
+      <div className={styles.chip}>
+        {(['t', 'r', 'b', 'l'] as const).map((side) =>
+          PINS.map((p) => <i key={side + p} data-side={side} style={{ '--p': p } as CSSProperties} />),
+        )}
+        <span className={styles.die}>
+          <span className={styles.core} />
+        </span>
+      </div>
+      <span className={styles.stage} data-n="2">
+        <b>{via}</b>
+      </span>
+
+      {/* Text */}
       <div className={styles.window}>
         <div className={styles.chrome}>
           <i />
@@ -39,27 +88,20 @@ export function DictationCover({ art }: { art: Extract<CoverArt, { kind: 'dictat
             <div key={i} className={styles.row}>
               <span
                 className={styles.line}
-                style={{ '--w': `${line.w}%`, '--o': line.o } as CSSProperties}
+                data-solid={line.solid ? 'true' : 'false'}
+                style={{ '--w': `${line.w}%` } as CSSProperties}
               />
               {i === LINES.length - 1 && <span className={styles.caret} />}
             </div>
           ))}
         </div>
       </div>
-
-      <span className={styles.drop} />
-
-      <span className={styles.keycap}>
-        <b>{art.key}</b>
+      <span className={styles.stage} data-n="3">
+        <b>{to}</b>
       </span>
 
-      <div className={styles.wave}>
-        {WAVE.map((level, i) => (
-          <span key={i} style={{ '--h': level } as CSSProperties} />
-        ))}
-      </div>
-
       <div className={styles.metric}>
+        <span className={styles.span} aria-hidden="true" />
         <span className={styles.value}>{art.metric}</span>
         <span className={styles.metricLabel}>{art.metricLabel}</span>
       </div>

@@ -1,0 +1,127 @@
+.badge {
+  position: absolute;
+  top: 1.5em;
+  right: 2.4em;
+  display: inline-flex;
+  align-items: center;
+  height: 2.1em;
+  padding: 0 1em;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  box-shadow: inset 0 0 0 0.8px color-mix(in srgb, var(--accent) 40%, transparent);
+  font-size: 0.85em;
+  font-weight: 500;
+  color: var(--badge-amber-fg);
+  white-space: nowrap;
+}
+
+/* ---------- The number ---------- */
+
+.numeral {
+  position: absolute;
+  top: 4.2em;
+  left: 2em;
+  display: flex;
+  align-items: flex-start;
+  white-space: nowrap;
+}
+
+.digits {
+  font-size: 12.6em;
+  font-weight: 700;
+  line-height: 0.82;
+  letter-spacing: -0.06em;
+  color: var(--ink);
+}
+
+.unit {
+  margin: 0.15em 0 0 0.2em;
+  font-size: 5em;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--accent);
+}
+
+/* ---------- The margin note ---------- */
+
+.note {
+  position: absolute;
+  top: 6.6em;
+  left: 23.6em;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.1em;
+  width: 14.2em;
+}
+
+.tile {
+  display: inline-flex;
+  width: 2.6em;
+  height: 2.6em;
+  padding: 0.4em;
+  border-radius: 0.7em;
+  background: var(--logo-tile);
+  box-shadow: var(--elev-1);
+}
+
+.tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.rule {
+  width: 2.2em;
+  height: 0.8px;
+  background: var(--accent);
+}
+
+.caption {
+  font-size: 1.15em;
+  line-height: 1.45;
+  color: var(--ink-body);
+}
+
+/* ---------- The ruler ---------- */
+
+.ruler {
+  position: absolute;
+  right: 2.4em;
+  bottom: 2.1em;
+  left: 2.4em;
+}
+
+.ticks {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 2.8em;
+  border-bottom: 0.8px solid var(--rim);
+}
+
+.ticks i {
+  display: block;
+  width: 0.14em;
+  height: 1.1em;
+  border-radius: 999px;
+  background: var(--rim);
+}
+
+.ticks i[data-major='true'] {
+  height: 1.7em;
+}
+
+.ticks i[data-on='true'] {
+  height: 2.4em;
+  background: var(--accent);
+}
+
+.scale {
+  display: block;
+  margin-top: 0.8em;
+  font-size: 0.85em;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
