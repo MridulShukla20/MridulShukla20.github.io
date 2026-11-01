@@ -95,42 +95,106 @@ export interface StackIntro {
   lede: string;
 }
 
-/** The one number a project card leads with, and where it came from. */
-export interface ProjectStat {
-  value: string;
-  /** What kind of number it is — a shipped result, a research finding. */
-  badge: string;
+export type WorkCategory = 'case-study' | 'prd' | 'build' | 'experiment';
+
+/**
+ * Generated cover art. Each kind is its own composition in components/work/covers,
+ * built around one idea from that project. `label` is the caption top-left.
+ */
+export type CoverArt =
+  | {
+      kind: 'dictation';
+      label: string;
+      /** The key that is held. */
+      key: string;
+      /** The tab on the dashed outline: where the work stays. */
+      boundary: string;
+      metric: string;
+      metricLabel: string;
+    }
+  | {
+      kind: 'waffle';
+      label: string;
+      /** Path under /public. */
+      logo?: string;
+      figure: string;
+      caption: string;
+      /** Cells lit out of a hundred. 40 reads as 40%. */
+      filled: number;
+      badge: string;
+    }
+  | {
+      kind: 'matrix';
+      label: string;
+      /** The environment types, one column each. Three. */
+      columns: string[];
+      filter: string;
+      /** The pattern in the filter field. */
+      pattern: string;
+      badge: string;
+      selected: string;
+      action: string;
+    }
+  | {
+      kind: 'transform';
+      label: string;
+      /** What goes in. Three: drawn as a page, a sheet and notes, in that order. */
+      sources: string[];
+    }
+  | { kind: 'flow'; label: string };
+
+export interface WorkCover {
+  /** Path under /public, 16:10. When set it replaces the generated art. */
+  image?: string;
+  art?: CoverArt;
+}
+
+export interface WorkLink {
   label: string;
-}
-
-export interface Project {
-  id: string;
-  /** Who it was for. Sits with the logo above the title. */
-  org: string;
-  /** Path under /public. */
-  logo: string;
-  title: string;
-  description: string;
-  /** Optional: a card without one drops the separator and the stat block. */
-  stat?: ProjectStat;
-  /** Where the card's button goes — the PDF, or a case-study route. */
   href: string;
-  ctaLabel: string;
-  /** Path under /public, 4:3. Bleeds off the card's right and bottom edges. */
-  thumbnail: string;
-  tags: string[];
+  /** Opens in a new tab. Path-only hrefs under /public are treated the same way. */
+  external?: boolean;
+}
+
+export interface WorkSection {
+  heading: string;
+  paragraphs?: string[];
+  bullets?: string[];
+}
+
+export interface WorkFact {
+  label: string;
+  value: string;
+}
+
+/** Case studies, builds and experiments share one shape. */
+export interface WorkItem {
+  /** Becomes /work/<slug>. */
+  slug: string;
+  title: string;
+  /** Card copy. Two or three lines. */
+  summary: string;
+  category: WorkCategory;
+  /** Who it was for, or whose product it is. Optional. */
+  org?: string;
+  skills: string[];
+  cover: WorkCover;
+  /** Small label/value pairs under the title on the detail page. */
+  facts?: WorkFact[];
+  /** Longer opening paragraph on the detail page. Falls back to `summary`. */
+  overview?: string;
+  sections?: WorkSection[];
+  /** First link is the primary button. */
+  links?: WorkLink[];
+  /** An inline document preview on the detail page (desktop only). */
+  preview?: { src: string; title: string };
   status: Status;
 }
 
-/** Same card, different tab. Case studies and projects share one shape. */
-export type CaseStudy = Project;
-
-export interface WorkEntry {
-  title: string;
-  status: Status;
-  slug?: string;
-  company?: string;
-  hook?: string;
+export interface WorkIntro {
+  label: string;
+  heading: string;
+  lede: string;
 }
 
 export interface About {

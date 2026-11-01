@@ -102,3 +102,19 @@ export function CopyIcon({ size = 16, ...rest }: IconProps) {
     </svg>
   );
 }
+
+export function ArrowLeftIcon({ size = 16, ...rest }: IconProps) {
+  return (
+    <svg {...strokeProps(size)} {...rest}>
+      <path d="M19 12H5M11 6l-6 6 6 6" />
+    </svg>
+  );
+}
+
+export function ArrowUpRightIcon({ size = 16, ...rest }: IconProps) {
+  return (
+    <svg {...strokeProps(size)} {...rest}>
+      <path d="M7 17 17 7M8 7h9v9" />
+    </svg>
+  );
+}

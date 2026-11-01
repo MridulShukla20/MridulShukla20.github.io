@@ -1,0 +1,35 @@
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 26px;
+  padding: 0 11px 0 10px;
+  border: 0.8px solid var(--stroke);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: 0.84px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--ink-2);
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ink-2);
+}
+
+.tag[data-category='build'] .dot {
+  background: var(--link);
+}
+
+.tag[data-category='experiment'] .dot {
+  background: var(--amber);
+}
+
+.tag[data-category='prd'] .dot {
+  background: var(--ok);
+}

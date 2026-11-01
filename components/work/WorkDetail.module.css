@@ -1,0 +1,279 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(28px, 4vw, 40px);
+  padding-bottom: 24px;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--ink-3);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.back:hover {
+  color: var(--ink);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+.org {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--ink-3);
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 32px;
+  letter-spacing: -0.4px;
+  color: var(--ink);
+}
+
+.overview {
+  max-width: var(--reveal);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 28px;
+  color: var(--ink-2);
+}
+
+/* ---------- Buttons ---------- */
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 22px;
+  border: 0.8px solid var(--stroke);
+  border-radius: 999px;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 18px;
+  text-decoration: none;
+  transition:
+    transform 0.1s,
+    background 0.15s,
+    box-shadow 0.15s;
+}
+
+.cta[data-primary='true'] {
+  border-color: var(--cta-border);
+  background: var(--cta-bg);
+  color: var(--cta-fg);
+  box-shadow: var(--shadow-raised);
+}
+
+.cta:hover {
+  transform: translateY(-1px);
+}
+
+.ctaIcon {
+  display: inline-flex;
+  transition: transform 0.26s cubic-bezier(0.34, 1.3, 0.6, 1);
+}
+
+.cta:hover .ctaIcon {
+  transform: translate(2px, -2px);
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  overflow: hidden;
+  border: 0.8px solid var(--stroke);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+/* ---------- Facts ---------- */
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 20px 24px;
+  padding: 20px 0;
+  border-top: 0.8px solid var(--divider);
+  border-bottom: 0.8px solid var(--divider);
+}
+
+.fact dt {
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.84px;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.fact dd {
+  margin-top: 4px;
+  font-size: 15px;
+  line-height: 24px;
+  color: var(--ink);
+}
+
+/* ---------- Body ---------- */
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: var(--reveal);
+}
+
+.heading {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 28px;
+  color: var(--ink);
+}
+
+.body {
+  font-size: 15px;
+  line-height: 24px;
+  color: var(--ink-body);
+}
+
+.bullets {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style: none;
+  font-size: 15px;
+  line-height: 24px;
+  color: var(--ink-body);
+}
+
+.bullets li {
+  position: relative;
+  padding-left: 20px;
+}
+
+.bullets li::before {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 0;
+  width: 8px;
+  height: 1px;
+  background: var(--ink-3);
+}
+
+.document {
+  max-width: none;
+}
+
+.frame {
+  width: 100%;
+  height: 560px;
+  border: 0.8px solid var(--stroke);
+  border-radius: var(--radius-card);
+  background: var(--panel);
+}
+
+/* ---------- Pager ---------- */
+
+.pager {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  padding-top: 24px;
+  border-top: 0.8px solid var(--divider);
+}
+
+.pagerLink {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  padding: 16px 20px;
+  border: 0.8px solid var(--stroke);
+  border-radius: var(--radius-card);
+  text-decoration: none;
+  transition: transform 0.26s cubic-bezier(0.34, 1.3, 0.6, 1);
+}
+
+.pagerLink[data-dir='next'] {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.pagerLink:hover {
+  transform: translateY(-2px);
+}
+
+.pagerLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.84px;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.pagerTitle {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 24px;
+  color: var(--ink);
+}
+
+@media (max-width: 639px) {
+  .title {
+    font-size: 18px;
+    line-height: 24px;
+  }
+
+  .overview {
+    font-size: 15px;
+    line-height: 24px;
+    font-weight: 400;
+  }
+
+  .cta {
+    flex: 1 1 100%;
+    justify-content: center;
+    min-height: 44px;
+  }
+
+  /* A PDF in a phone-width frame traps the scroll. The button above opens it. */
+  .document {
+    display: none;
+  }
+
+  .pager {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

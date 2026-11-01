@@ -51,8 +51,8 @@ export const experience: ExperienceEntry[] = [
     id: 'lambdatest',
     company: 'LambdaTest',
     logo: '/companies/lambdatest.png',
-    role: 'Growth Intern',
-    roleShort: 'Growth Intern',
+    role: 'Product Intern',
+    roleShort: 'Product Intern',
     dateLong: 'Jun 2024 — Oct 2024',
     dateShort: "Jun '24 — Oct '24",
     start: '2024-06',
@@ -60,13 +60,14 @@ export const experience: ExperienceEntry[] = [
     employment: 'PLACEHOLDER',
     location: 'PLACEHOLDER',
     bullets: [
-      'Grew qualified lead flow by 15% by refining campaign targeting and improving how ' +
-        'we managed and tracked leads in Salesforce.',
-      'Helped Account Executives drive product trials through targeted cold outreach, ' +
-        'strengthening traction in key tech segments and validating early interest.',
-      'Implemented data-driven A/B testing protocols across multiple digital channels, ' +
-        'leading to measurable improvements in user activation rates and campaign ' +
-        'conversion efficiency.',
+      'Supported Product Managers on HyperExecute, LambdaTest’s test orchestration platform, ' +
+        'across experimentation, funnel analysis, and go-to-market.',
+      'Ran A/B experiments across acquisition channels to improve user activation and ' +
+        'trial conversion.',
+      'Grew qualified top-of-funnel leads by 15% through sharper audience targeting and ' +
+        'cleaner funnel tracking in Salesforce.',
+      'Validated market demand in key tech segments, working with Account Executives on ' +
+        'targeted outreach that converted prospects into product trials.',
     ],
     status: 'live',
   },

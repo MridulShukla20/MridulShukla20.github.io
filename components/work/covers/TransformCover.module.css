@@ -1,0 +1,228 @@
+.wires {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.wires path {
+  fill: none;
+  stroke: color-mix(in srgb, var(--accent) 70%, transparent);
+  stroke-width: 1px;
+  stroke-dasharray: 3 3;
+}
+
+/* ---------- What goes in ---------- */
+
+.sources {
+  position: absolute;
+  top: 5.2em;
+  left: 3em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7em;
+}
+
+.source {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55em;
+  width: 7.6em;
+  height: 5.3em;
+  padding: 0.7em 0.8em;
+  border: 0.8px solid var(--line);
+  border-radius: 0.7em;
+  background: var(--panel);
+  box-shadow: var(--shadow-card);
+}
+
+/* The source's own corner: a page, turned down. */
+.source[data-kind='0']::after {
+  content: '';
+  position: absolute;
+  top: -0.8px;
+  right: -0.8px;
+  width: 1.1em;
+  height: 1.1em;
+  border-bottom: 0.8px solid var(--line);
+  border-left: 0.8px solid var(--line);
+  border-bottom-left-radius: 0.4em;
+  background: var(--backdrop);
+}
+
+.sourceName {
+  font-size: 0.8em;
+  letter-spacing: 0.09em;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 0.42em;
+}
+
+.page i {
+  display: block;
+  height: 0.32em;
+  border-radius: 999px;
+  background: var(--ink-3);
+  opacity: 0.6;
+}
+
+.page i[data-short='true'] {
+  width: 62%;
+}
+
+.sheet {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.3em;
+}
+
+.sheet i {
+  display: block;
+  height: 0.7em;
+  border-radius: 0.2em;
+  background: var(--line);
+}
+
+.sheet i[data-head='true'] {
+  background: color-mix(in srgb, var(--accent) 40%, transparent);
+}
+
+.join {
+  position: absolute;
+  top: 10.85em;
+  left: 17.7em;
+  width: 0.6em;
+  height: 0.6em;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0.9em var(--accent);
+}
+
+/* ---------- What comes out ---------- */
+
+.slide {
+  position: absolute;
+  top: 5.6em;
+  left: 18.4em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6em;
+  width: 18.6em;
+  height: 11.8em;
+  padding: 1.5em 1.7em;
+  border: 0.8px solid var(--line);
+  border-radius: 0.9em;
+  background: var(--panel);
+  box-shadow: var(--shadow-card);
+}
+
+/* The title is selected: a box, and four handles. */
+.titleBox {
+  position: relative;
+  align-self: flex-start;
+  width: 9.6em;
+  padding: 0.45em 0.6em;
+  margin: -0.45em -0.6em 0.3em;
+  border: 0.8px solid var(--accent);
+}
+
+.title {
+  display: block;
+  width: 100%;
+  height: 0.8em;
+  border-radius: 999px;
+  background: var(--ink);
+}
+
+.titleBox b {
+  position: absolute;
+  width: 0.6em;
+  height: 0.6em;
+  border: 0.8px solid var(--accent);
+  background: var(--panel);
+}
+
+.titleBox b[data-corner='tl'] {
+  top: -0.35em;
+  left: -0.35em;
+}
+
+.titleBox b[data-corner='tr'] {
+  top: -0.35em;
+  right: -0.35em;
+}
+
+.titleBox b[data-corner='bl'] {
+  bottom: -0.35em;
+  left: -0.35em;
+}
+
+.titleBox b[data-corner='br'] {
+  right: -0.35em;
+  bottom: -0.35em;
+}
+
+.sub {
+  display: block;
+  width: 55%;
+  height: 0.38em;
+  border-radius: 999px;
+  background: var(--ink-3);
+  opacity: 0.6;
+}
+
+.sub[data-short='true'] {
+  width: 38%;
+}
+
+.chart {
+  position: absolute;
+  right: 1.7em;
+  bottom: 1.5em;
+  display: flex;
+  align-items: flex-end;
+  gap: 0.45em;
+  width: 7.4em;
+  height: 4.6em;
+  border-bottom: 0.8px solid var(--line);
+}
+
+.chart i {
+  flex: 1;
+  border-radius: 0.2em 0.2em 0 0;
+  background: var(--accent);
+}
+
+.chart i:nth-child(odd) {
+  opacity: 0.55;
+}
+
+.strip {
+  position: absolute;
+  top: 18.8em;
+  left: 18.4em;
+  display: flex;
+  gap: 0.9em;
+}
+
+.strip span {
+  width: 5.7em;
+  height: 3.6em;
+  border: 0.8px solid var(--line);
+  border-radius: 0.5em;
+  background: var(--panel);
+  opacity: 0.7;
+}
+
+.strip span[data-current='true'] {
+  border-color: var(--accent);
+  opacity: 1;
+}

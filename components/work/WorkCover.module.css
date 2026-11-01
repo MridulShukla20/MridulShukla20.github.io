@@ -1,0 +1,115 @@
+/*
+ * The stage every cover shares. It is always the dark theme — the cover tag
+ * re-scopes the dark tokens — so a thumbnail looks the same in either theme
+ * and the cards read as one set. Underneath: the site's dashed grid, fading
+ * toward the edges; the site's noise; and one soft glow in the project's accent.
+ *
+ * Everything inside the board is sized in em, and the board's font-size is a
+ * fortieth of the cover's width, so a composition is drawn once, on a 40 x 25
+ * artboard, and scales as a picture at the card size and the hero size alike.
+ */
+.cover {
+  --accent: var(--link);
+  --glow-x: 50%;
+  --glow-y: 46%;
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  container-type: inline-size;
+  background: var(--backdrop);
+  color: var(--ink);
+  isolation: isolate;
+}
+
+.cover[data-accent='amber'] {
+  --accent: var(--amber);
+}
+
+.cover[data-accent='green'] {
+  --accent: var(--ok);
+}
+
+.grid,
+.noise,
+.glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.grid {
+  z-index: -3;
+  background-image: var(--grid);
+  background-size: calc(100cqw / 5);
+  opacity: 0.7;
+  -webkit-mask-image: radial-gradient(ellipse 75% 85% at 50% 50%, var(--ink) 20%, transparent 100%);
+  mask-image: radial-gradient(ellipse 75% 85% at 50% 50%, var(--ink) 20%, transparent 100%);
+}
+
+.glow {
+  z-index: -2;
+  background: radial-gradient(
+    ellipse 55% 65% at var(--glow-x) var(--glow-y),
+    color-mix(in srgb, var(--accent) 18%, transparent),
+    transparent 72%
+  );
+}
+
+.noise {
+  z-index: -1;
+  background-image: var(--noise);
+  opacity: 0.9;
+}
+
+/* A hairline just inside the edge, so the stage has an edge of its own. */
+.cover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 0.8px var(--line-2);
+  pointer-events: none;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.board {
+  position: absolute;
+  inset: 0;
+  font-size: calc(100cqw / 40);
+  line-height: 1.3;
+  transition: transform 0.26s cubic-bezier(0.34, 1.3, 0.6, 1);
+}
+
+:global([data-work-card]:hover) .board {
+  transform: translateY(-0.25em);
+}
+
+.label {
+  position: absolute;
+  top: 1.7em;
+  left: 2.4em;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7em;
+  font-size: 1em;
+  line-height: 1.2;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.label::before {
+  content: '';
+  width: 0.55em;
+  height: 0.55em;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0.9em var(--accent);
+}

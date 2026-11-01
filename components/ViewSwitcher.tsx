@@ -1,5 +1,6 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import {
   useCallback,
   useEffect,
@@ -7,17 +8,17 @@ import {
   useState,
   useSyncExternalStore,
   type ComponentType,
+  type ReactNode,
 } from 'react';
 import { Footer } from '@/components/Footer';
 import { MobileBar } from '@/components/MobileBar';
 import { Preloader } from '@/components/Preloader';
 import { Sidebar } from '@/components/Sidebar';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import { CaseStudiesView } from '@/components/views/CaseStudiesView';
 import { ExperienceView } from '@/components/views/ExperienceView';
 import { HomeView } from '@/components/views/HomeView';
-import { ProjectsView } from '@/components/views/ProjectsView';
 import { StackView } from '@/components/views/StackView';
+import { WorkView } from '@/components/views/WorkView';
 import { profile } from '@/content/profile';
 import { DEFAULT_TAB, tabFromHash, type TabId } from '@/lib/nav';
 import styles from './ViewSwitcher.module.css';
@@ -26,8 +27,7 @@ const VIEWS: Record<TabId, ComponentType> = {
   home: HomeView,
   experience: ExperienceView,
   stack: StackView,
-  projects: ProjectsView,
-  'case-studies': CaseStudiesView,
+  work: WorkView,
 };
 
 /*
@@ -48,8 +48,14 @@ function getServerSnapshot(): TabId {
   return DEFAULT_TAB;
 }
 
-export function ViewSwitcher() {
-  const active = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+/*
+ * `pinned` and `children` are for pages that live under a tab but are routes of
+ * their own, like a work detail page: the shell and its chrome are the same, the
+ * tab is fixed, and the page replaces the view.
+ */
+export function ViewSwitcher({ pinned, children }: { pinned?: TabId; children?: ReactNode }) {
+  const hashTab = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const active = pinned ?? hashTab;
   const mainRef = useRef<HTMLElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
@@ -189,6 +195,12 @@ export function ViewSwitcher() {
     previous.current = active;
   }, [active]);
 
+  // Moving between two detail pages keeps this component mounted; the column still starts at the top.
+  const pathname = usePathname();
+  useEffect(() => {
+    scrollRef.current?.scrollTo(0, 0);
+  }, [pathname]);
+
   const View = VIEWS[active];
 
   return (
@@ -268,7 +280,7 @@ export function ViewSwitcher() {
           <div className={styles.scroll} ref={scrollRef}>
             <div className={styles.reading}>
               <div key={active} className="anim-fade">
-                <View />
+                {children ?? <View />}
               </div>
             </div>
           </div>

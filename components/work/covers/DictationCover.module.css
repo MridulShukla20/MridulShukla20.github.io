@@ -1,0 +1,162 @@
+/* Drawn on the 40 x 25 artboard; 1em is a fortieth of the cover. */
+
+.boundary {
+  position: absolute;
+  inset: 4.6em 2.4em 1.6em;
+  border: 0.8px dashed color-mix(in srgb, var(--accent) 45%, transparent);
+  border-radius: 1.8em;
+}
+
+.boundaryTag {
+  position: absolute;
+  top: -0.8em;
+  right: 1.8em;
+  padding: 0 0.6em;
+  background: var(--backdrop);
+  font-size: 0.85em;
+  line-height: 1.5;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* ---------- The app in front ---------- */
+
+.window {
+  position: absolute;
+  top: 6.4em;
+  left: 4.6em;
+  width: 30.8em;
+  height: 9.6em;
+  overflow: hidden;
+  border: 0.8px solid var(--line);
+  border-radius: 1.1em;
+  background: var(--panel);
+  box-shadow: var(--shadow-card);
+}
+
+.chrome {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  height: 2.3em;
+  padding: 0 1.1em;
+  border-bottom: 0.8px solid var(--line-2);
+}
+
+.chrome i {
+  width: 0.6em;
+  height: 0.6em;
+  border-radius: 50%;
+  background: var(--line);
+}
+
+.lines {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85em;
+  padding: 1.3em 1.5em;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 0.35em;
+}
+
+.line {
+  width: var(--w);
+  height: 0.55em;
+  border-radius: 999px;
+  background: var(--ink-2);
+  opacity: var(--o);
+}
+
+.caret {
+  width: 0.18em;
+  height: 1.35em;
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 0 0.8em var(--accent);
+}
+
+/* The text drops from the sound to the page. */
+.drop {
+  position: absolute;
+  top: 16.1em;
+  left: 20em;
+  height: 2.3em;
+  border-left: 0.8px dashed color-mix(in srgb, var(--accent) 60%, transparent);
+}
+
+/* ---------- The held key, the voice, the number ---------- */
+
+.keycap {
+  position: absolute;
+  top: 18.6em;
+  left: 4.6em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.8em;
+  height: 3.8em;
+  border: 0.8px solid color-mix(in srgb, var(--accent) 70%, transparent);
+  border-radius: 1em;
+  background: color-mix(in srgb, var(--accent) 14%, var(--panel));
+  box-shadow:
+    0 0 1.6em color-mix(in srgb, var(--accent) 40%, transparent),
+    0 0.15em 0 color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+.keycap b {
+  font-size: 1.3em;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.wave {
+  position: absolute;
+  top: 18.6em;
+  left: 11em;
+  display: flex;
+  align-items: center;
+  gap: 0.42em;
+  height: 3.8em;
+}
+
+.wave span {
+  width: 0.3em;
+  height: calc(var(--h) * 100%);
+  border-radius: 999px;
+  background: var(--accent);
+  opacity: calc(0.3 + var(--h) * 0.7);
+}
+
+.metric {
+  position: absolute;
+  top: 18.4em;
+  right: 4.6em;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3em;
+  text-align: right;
+}
+
+.value {
+  font-size: 1.9em;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+.metricLabel {
+  font-size: 0.8em;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
